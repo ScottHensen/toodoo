@@ -34,7 +34,6 @@ jobs:
 #--- circleci wants to run gradle 10, which doesn't work with lombok
 #--- so I am using gradlew instead, so we can build with gradle 8 
       - run: gradle -v
-      - run: gradle allDependencies
       - run: gradle dependencies
 
 #      - run: ./gradlew -v
