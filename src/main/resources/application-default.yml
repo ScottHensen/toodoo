@@ -1,0 +1,15 @@
+#-commented values will go in the dev yml file
+
+spring:
+  datasource:
+#    url: jdbc:mysql://localhost:3306/toodoo_dev
+#    username: foo - use secrets
+#    password: bar - use secrets
+    platform: h2
+  jpa: 
+#    database: mysql
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+#      ddl-auto: validate
+      ddl-auto: create-drop
+    show-sql: true
