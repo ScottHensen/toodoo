@@ -8,5 +8,5 @@ import life.toodoo.api.domain.Event;
 @Repository
 public interface EventRepo extends JpaRepository<Event, Long>
 {
-	public Event findEventById(Long id);
+//	public Event findEventById(Long id);
 }
