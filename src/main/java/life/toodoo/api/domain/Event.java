@@ -1,5 +1,8 @@
 package life.toodoo.api.domain;
 
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +17,18 @@ public class Event
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long     id;   
-	private String   title;
+
+    @Column( name = "title" )
+    private String   title;
+    
+    @Column( name = "status" )
+	private String   status;
+    
+    @Column( name = "complete_pct" )
+	private BigDecimal completePct;
+    
+    @Column( name = "priority" )
+	private Integer  priority;
 	
 //TODO
 //	private Blob     description;

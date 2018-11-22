@@ -15,6 +15,10 @@ public class EventMapper
 		
 		EventDTO eventDTO = new EventDTO();
 		eventDTO.setTitle(event.getTitle());
+		eventDTO.setStatus(event.getStatus());
+		eventDTO.setPriority(event.getPriority());
+		eventDTO.setCompletePct(event.getCompletePct());
+		
 		return eventDTO;
 	}
 }

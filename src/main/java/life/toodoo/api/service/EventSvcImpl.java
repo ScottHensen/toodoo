@@ -8,12 +8,12 @@ import life.toodoo.api.v1.mapper.EventMapper;
 import life.toodoo.api.v1.model.EventDTO;
 
 @Service
-public class EventSvcimpl implements EventSvc
+public class EventSvcImpl implements EventSvc
 {
 	private final EventMapper eventMapper;
 	private final EventRepo   eventRepo;
 	
-	public EventSvcimpl(EventMapper eventMapper, EventRepo eventRepo) {
+	public EventSvcImpl(EventMapper eventMapper, EventRepo eventRepo) {
 		this.eventMapper = eventMapper;
 		this.eventRepo   = eventRepo;
 	}
