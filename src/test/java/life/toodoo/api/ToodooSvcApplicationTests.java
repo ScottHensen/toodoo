@@ -1,4 +1,4 @@
-package life.toodoo.svc;
+package life.toodoo.api;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
