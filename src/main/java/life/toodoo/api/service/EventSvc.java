@@ -8,4 +8,6 @@ public interface EventSvc
 	EventDTO     getEventById(Long id);
 
 	EventListDTO getAllEvents();
+
+	EventDTO     createEvent(EventDTO eventDTO);
 }

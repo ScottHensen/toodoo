@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import life.toodoo.api.domain.Event;
 import life.toodoo.api.exception.ResourceNotFoundException;
 import life.toodoo.api.repositories.EventRepo;
 import life.toodoo.api.v1.mapper.EventMapper;
@@ -37,11 +38,18 @@ public class EventSvcImpl implements EventSvc
 				eventRepo.findAll()
 					.stream()
 					.map( event -> {
-						EventDTO eventDTO = eventMapper.mapEventToEventDTO(event);
-						return eventDTO;
+						return eventMapper.mapEventToEventDTO(event);
 					})
 					.collect(Collectors.toList());
 		return new EventListDTO(events);
 						
+	}
+
+	@Override
+	public EventDTO createEvent(EventDTO eventDTO) 
+	{
+		Event savedEvent = eventRepo.save( eventMapper.mapEventDTOtoEvent(eventDTO) );
+		
+		return eventMapper.mapEventToEventDTO(savedEvent);
 	}
 }

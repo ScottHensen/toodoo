@@ -44,4 +44,26 @@ public class EventMapperTest
 		assertThat(eventDTO.getCompletePct()).isEqualTo(COMPLETE_PCT);
 	}
 
+	@Test
+	public void testEventDtoToEvent()
+	{
+		// given
+		EventMapper eventMapper = new EventMapper();
+
+		EventDTO eventDTO = 
+				EventDTO.builder()
+						.title(TITLE)
+						.status(STATUS)
+						.priority(PRIORITY)
+						.completePct(COMPLETE_PCT)
+						.build();
+		// when 
+		Event event = eventMapper.mapEventDTOtoEvent(eventDTO);
+		
+		// then
+		assertThat(event.getTitle()).isEqualTo(eventDTO.getTitle());
+		assertThat(event.getStatus()).isEqualTo(eventDTO.getStatus());
+		assertThat(event.getPriority()).isEqualTo(eventDTO.getPriority());
+		assertThat(event.getCompletePct()).isEqualTo(eventDTO.getCompletePct());
+	}
 }

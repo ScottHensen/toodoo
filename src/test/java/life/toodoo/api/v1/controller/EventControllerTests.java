@@ -1,10 +1,14 @@
 package life.toodoo.api.v1.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.number.BigDecimalCloseTo.closeTo;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,6 +25,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import life.toodoo.api.exception.ResourceNotFoundException;
 import life.toodoo.api.service.EventSvc;
+import life.toodoo.api.util.TestUtil;
 import life.toodoo.api.v1.controller.EventController;
 import life.toodoo.api.v1.model.EventDTO;
 import life.toodoo.api.v1.model.EventListDTO;
@@ -123,4 +128,29 @@ public class EventControllerTests
 //		
 //	}
 
+	@Test
+	public void testCreateEvent() throws Exception
+	{
+		// given
+		EventDTO returnedEvent = 
+				EventDTO.builder()
+						.title(TITLE1)
+						.status(STATUS1)
+						.priority(PRIORITY1)
+						.completePct(COMPLETE_PCT1)
+						.build();
+		
+		when(eventSvc.createEvent(any(EventDTO.class))).thenReturn(returnedEvent);
+		
+		// expect
+		mockMvc.perform(post(URL)
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(TestUtil.convertObjectToJsonBytes(eventDTO)))
+				.andExpect(status().isCreated())
+				.andDo(print())
+				.andExpect(jsonPath("$.title", is(TITLE1)))
+				.andExpect(jsonPath("$.status", is(STATUS1)))
+				.andExpect(jsonPath("$.priority", is(PRIORITY1)));
+	}
 }

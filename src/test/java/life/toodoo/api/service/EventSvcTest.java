@@ -58,4 +58,31 @@ public class EventSvcTest
 		assertThat(eventDTO.getTitle()).isEqualTo(TITLE);
 	}
 
+	@Test
+	public void testCreateEvent()
+	{
+		// given
+		Event event = new Event();
+		event.setId(ID);
+		event.setTitle(TITLE);
+		event.setStatus(STATUS);
+		event.setPriority(PRIORITY);
+		event.setCompletePct(COMPLETE_PCT);
+		
+		EventDTO eventDTO = 
+				EventDTO.builder()
+						.title(TITLE)
+						.status(STATUS)
+						.priority(PRIORITY)
+						.completePct(COMPLETE_PCT)
+						.build();
+		
+		when(eventRepo.save(any(Event.class))).thenReturn(event);
+
+		// when 
+		EventDTO savedDTO = eventSvc.createEvent(eventDTO);
+		
+		// then
+		assertThat(savedDTO.getTitle()).isEqualTo(savedDTO.getTitle());
+	}
 }

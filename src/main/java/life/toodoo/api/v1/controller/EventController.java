@@ -1,8 +1,14 @@
 package life.toodoo.api.v1.controller;
 
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -36,5 +42,13 @@ public class EventController
 	public EventDTO getEventByID( @PathVariable Long id )
 	{
 		return eventSvc.getEventById(id);
+	}
+	
+	@PostMapping( { "" } )
+	@ResponseStatus( HttpStatus.CREATED )
+	@ApiOperation( value = "Create an event" )
+	public EventDTO createEvent( @Valid @RequestBody EventDTO eventDTO )
+	{
+		return eventSvc.createEvent(eventDTO);
 	}
 }
