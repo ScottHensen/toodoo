@@ -21,4 +21,18 @@ public class EventMapper
 		
 		return eventDTO;
 	}
+
+	public Event mapEventDTOtoEvent(EventDTO eventDTO) 
+	{
+		if ( eventDTO == null )
+			return null;
+		
+		Event event = new Event();
+		event.setTitle(eventDTO.getTitle());
+		event.setStatus(eventDTO.getStatus());
+		event.setPriority(eventDTO.getPriority());
+		event.setCompletePct(eventDTO.getCompletePct());
+		
+		return event;
+	}
 }

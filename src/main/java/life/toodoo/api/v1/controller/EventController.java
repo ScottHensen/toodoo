@@ -1,15 +1,25 @@
 package life.toodoo.api.v1.controller;
 
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import life.toodoo.api.service.EventSvc;
 import life.toodoo.api.v1.model.EventDTO;
+import life.toodoo.api.v1.model.EventListDTO;
 
 @RestController
 @RequestMapping( EventController.BASE_URL )
+@Api
 public class EventController 
 {
 	public static final String BASE_URL = "/api/v1/events";
@@ -20,9 +30,25 @@ public class EventController
 		this.eventSvc = eventSvc;
 	}
 	
+	@GetMapping( { "" } )
+	@ApiOperation( value = "Get all events" )
+	public EventListDTO getAllEvents()
+	{
+		return eventSvc.getAllEvents();
+	}
+	
 	@GetMapping( { "/{id}" } )
+	@ApiOperation( value = "Get an event for a given id" )
 	public EventDTO getEventByID( @PathVariable Long id )
 	{
 		return eventSvc.getEventById(id);
+	}
+	
+	@PostMapping( { "" } )
+	@ResponseStatus( HttpStatus.CREATED )
+	@ApiOperation( value = "Create an event" )
+	public EventDTO createEvent( @Valid @RequestBody EventDTO eventDTO )
+	{
+		return eventSvc.createEvent(eventDTO);
 	}
 }
