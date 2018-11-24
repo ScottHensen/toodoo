@@ -79,7 +79,7 @@ public class EventSvcImpl implements EventSvc
 	}
 
 	
-	private EventDTO mergeEventDtoIntoEvent(EventDTO eventDTO, Event event) 
+	protected EventDTO mergeEventDtoIntoEvent(EventDTO eventDTO, Event event) 
 	{
 		if (eventDTO.getTitle()    != null ) {
 			event.setTitle(eventDTO.getTitle());
