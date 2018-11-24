@@ -3,15 +3,19 @@ package life.toodoo.api.v1.controller;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.number.BigDecimalCloseTo.closeTo;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
@@ -152,5 +156,61 @@ public class EventControllerTests
 				.andExpect(jsonPath("$.title", is(TITLE1)))
 				.andExpect(jsonPath("$.status", is(STATUS1)))
 				.andExpect(jsonPath("$.priority", is(PRIORITY1)));
+	}
+	
+	@Test
+	public void testUpdateEvent() throws Exception
+	{
+		// given
+		EventDTO returnedEvent = 
+				EventDTO.builder()
+						.title(TITLE1)
+						.status("updated")
+						.priority(PRIORITY1)
+						.completePct(COMPLETE_PCT1)
+						.build();
+		
+		when(eventSvc.updateEvent(anyLong(), any(EventDTO.class))).thenReturn(returnedEvent);
+		
+		// expect
+		mockMvc.perform(put(URL + "/1")
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(TestUtil.convertObjectToJsonBytes(eventDTO)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.title", is(TITLE1)))
+				.andExpect(jsonPath("$.status", is("updated")))
+				.andExpect(jsonPath("$.priority", is(PRIORITY1)));
+	}
+	
+	@Test
+	public void testPatchEvent() throws Exception
+	{
+		// given
+		EventDTO returnedEvent = eventDTO;
+		returnedEvent.setStatus("patched");
+		
+		when(eventSvc.patchEvent(anyLong(), any(EventDTO.class))).thenReturn(returnedEvent);
+		
+		// expect
+		mockMvc.perform(patch(URL + "/1")
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(TestUtil.convertObjectToJsonBytes(eventDTO)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.title", is(TITLE1)))
+				.andExpect(jsonPath("$.status", is("patched")))
+				.andExpect(jsonPath("$.priority", is(PRIORITY1)));		
+	}
+	
+	@Test
+	public void testDeleteEvent() throws Exception
+	{
+		mockMvc.perform(delete(URL + "/1")
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+				
+		verify(eventSvc).deleteEventById(anyLong());
 	}
 }

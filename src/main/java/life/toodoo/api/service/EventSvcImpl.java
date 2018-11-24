@@ -52,4 +52,48 @@ public class EventSvcImpl implements EventSvc
 		
 		return eventMapper.mapEventToEventDTO(savedEvent);
 	}
+
+	@Override
+	public EventDTO updateEvent(long id, EventDTO eventDTO) 
+	{
+		Event event = eventMapper.mapEventDTOtoEvent(eventDTO);
+		event.setId(id);
+		
+		return eventMapper.mapEventToEventDTO( eventRepo.save(event) );
+		
+	}
+	
+	@Override
+	public EventDTO patchEvent(long id, EventDTO eventDTO) 
+	{
+		return eventRepo.findById(id)
+				.map( event -> mergeEventDtoIntoEvent(eventDTO, event) )
+				.orElseThrow(ResourceNotFoundException::new);
+		
+	}
+	@Override
+	public void deleteEventById(long id) 
+	{
+		eventRepo.deleteById(id);
+		
+	}
+
+	
+	private EventDTO mergeEventDtoIntoEvent(EventDTO eventDTO, Event event) 
+	{
+		if (eventDTO.getTitle()    != null ) {
+			event.setTitle(eventDTO.getTitle());
+		}
+		if (eventDTO.getPriority() != null ) {
+			event.setPriority(eventDTO.getPriority());
+		}
+		if (eventDTO.getStatus()   != null ) {
+			event.setStatus(eventDTO.getStatus());
+		}
+		if (eventDTO.getClass()    != null ) {
+			event.setCompletePct(eventDTO.getCompletePct());
+		}
+		return eventMapper.mapEventToEventDTO(event);
+	}
+
 }
