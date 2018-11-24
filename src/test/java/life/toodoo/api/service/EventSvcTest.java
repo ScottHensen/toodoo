@@ -24,6 +24,9 @@ public class EventSvcTest
 	private static final Integer PRIORITY = 1;
 	private static final BigDecimal COMPLETE_PCT = BigDecimal.valueOf(50.0);
 
+	private EventDTO eventDTO;
+	private Event event;
+	
 	EventSvc eventSvc;
 	
 	@Mock
@@ -32,6 +35,20 @@ public class EventSvcTest
 	@Before
 	public void setUp() throws Exception 
 	{
+		event = new Event();
+		event.setId(ID);
+		event.setTitle(TITLE);
+		event.setStatus(STATUS);
+		event.setPriority(PRIORITY);
+		event.setCompletePct(COMPLETE_PCT);
+
+		eventDTO = EventDTO.builder()
+						.title(TITLE)
+						.status(STATUS)
+						.priority(PRIORITY)
+						.completePct(COMPLETE_PCT)
+						.build();
+
 		MockitoAnnotations.initMocks(this);
 
 		eventSvc = new EventSvcImpl( new EventMapper(), eventRepo );
@@ -41,12 +58,6 @@ public class EventSvcTest
 	public void testGetEventById() 
 	{
 		// given
-		Event event = new Event();
-		event.setId(ID);
-		event.setTitle(TITLE);
-		event.setStatus(STATUS);
-		event.setPriority(PRIORITY);
-		event.setCompletePct(COMPLETE_PCT);
 		Optional<Event> returnEvent = Optional.of(event);
 
 		when(eventRepo.findById(anyLong())).thenReturn(returnEvent);
@@ -61,28 +72,115 @@ public class EventSvcTest
 	@Test
 	public void testCreateEvent()
 	{
-		// given
-		Event event = new Event();
-		event.setId(ID);
-		event.setTitle(TITLE);
-		event.setStatus(STATUS);
-		event.setPriority(PRIORITY);
-		event.setCompletePct(COMPLETE_PCT);
-		
-		EventDTO eventDTO = 
-				EventDTO.builder()
-						.title(TITLE)
-						.status(STATUS)
-						.priority(PRIORITY)
-						.completePct(COMPLETE_PCT)
-						.build();
-		
+		// given		
 		when(eventRepo.save(any(Event.class))).thenReturn(event);
 
 		// when 
 		EventDTO savedDTO = eventSvc.createEvent(eventDTO);
 		
 		// then
-		assertThat(savedDTO.getTitle()).isEqualTo(savedDTO.getTitle());
+		assertThat(savedDTO.getTitle()).isEqualTo(eventDTO.getTitle());
+	}
+	
+	@Test
+	public void testUpdateEvent()
+	{
+		// given
+		Long id = 1L;
+
+		when(eventRepo.save(any(Event.class))).thenReturn(event);
+		
+		// when
+		EventDTO updatedDTO = eventSvc.updateEvent(id, eventDTO);
+		
+		// then
+		assertThat(updatedDTO.getTitle()).isEqualTo(eventDTO.getTitle());
+	}
+	
+	@Test
+	public void testPatchEvent()
+	{
+		// given
+		Long id = 1L;
+
+		when(eventRepo.findById(anyLong())).thenReturn(Optional.of(event));
+		
+		// when
+		EventDTO updatedDTO = eventSvc.patchEvent(id, eventDTO);
+		
+		// then
+		assertThat(updatedDTO.getTitle()).isEqualTo(eventDTO.getTitle());
+	}
+	
+	@Test
+	public void testDeleteEvent()
+	{
+		Long id = 1L;
+		eventSvc.deleteEventById(id);
+		verify(eventRepo, times(1)).deleteById(anyLong());
+	}
+	
+	@Test
+	public void testMergeNullEventDtoIntoEvent()
+	{
+		// given
+		EventDTO nullEventDTO = new EventDTO();
+		
+		// when 
+		EventDTO mergedEventDTO = ((EventSvcImpl) eventSvc).mergeEventDtoIntoEvent(nullEventDTO, event);
+
+		// then 
+		assertThat(mergedEventDTO.getTitle()).isEqualTo(event.getTitle());
+		assertThat(mergedEventDTO.getStatus()).isEqualTo(event.getStatus());
+		assertThat(mergedEventDTO.getPriority()).isEqualTo(event.getPriority());
+		assertThat(mergedEventDTO.getCompletePct()).isEqualTo(event.getCompletePct());
+	}
+	
+	@Test
+	public void testMergeEventDtoIntoNullEvent()
+	{
+		// given
+		Event nullEvent = new Event();
+		
+		// when 
+		EventDTO mergedEventDTO = ((EventSvcImpl) eventSvc).mergeEventDtoIntoEvent(eventDTO, nullEvent);
+
+		// then 
+		assertThat(mergedEventDTO.getTitle()).isEqualTo(event.getTitle());
+		assertThat(mergedEventDTO.getStatus()).isEqualTo(event.getStatus());
+		assertThat(mergedEventDTO.getPriority()).isEqualTo(event.getPriority());
+		assertThat(mergedEventDTO.getCompletePct()).isEqualTo(event.getCompletePct());
+	}
+	
+	@Test
+	public void testMergeNullEventDtoIntoNullEvent()
+	{
+		// given
+		EventDTO nullEventDTO = new EventDTO();
+		Event    nullEvent    = new Event();
+		
+		// when 
+		EventDTO mergedEventDTO = ((EventSvcImpl) eventSvc).mergeEventDtoIntoEvent(nullEventDTO, nullEvent);
+
+		// then 
+		assertThat(mergedEventDTO.getTitle()).isEqualTo(nullEvent.getTitle());
+		assertThat(mergedEventDTO.getStatus()).isEqualTo(nullEvent.getStatus());
+		assertThat(mergedEventDTO.getPriority()).isEqualTo(nullEvent.getPriority());
+		assertThat(mergedEventDTO.getCompletePct()).isEqualTo(nullEvent.getCompletePct());
+	}
+	
+	@Test
+	public void testMergeEventDtoIntoEvent()
+	{
+		// given
+		eventDTO.setStatus("foo");
+		// when 
+		EventDTO mergedEventDTO = ((EventSvcImpl) eventSvc).mergeEventDtoIntoEvent(eventDTO, event);
+
+		// then 
+		assertThat(mergedEventDTO.getTitle()).isEqualTo(event.getTitle());
+		assertThat(mergedEventDTO.getStatus()).isEqualTo("foo");
+		assertThat(mergedEventDTO.getPriority()).isEqualTo(event.getPriority());
+		assertThat(mergedEventDTO.getCompletePct()).isEqualTo(event.getCompletePct());
 	}
 }

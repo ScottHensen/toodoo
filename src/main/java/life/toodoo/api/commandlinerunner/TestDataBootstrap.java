@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class LocalTestDataBootstrap implements CommandLineRunner
+public class TestDataBootstrap implements CommandLineRunner
 {
 	private static final Long ID1 = 1L;
 	private static final String TITLE1     = "Take over the world";
@@ -27,7 +27,7 @@ public class LocalTestDataBootstrap implements CommandLineRunner
 
 	private EventRepo eventRepo;
 	
-	public LocalTestDataBootstrap(EventRepo eventRepo) {
+	public TestDataBootstrap(EventRepo eventRepo) {
 		this.eventRepo = eventRepo;
 	}
 
