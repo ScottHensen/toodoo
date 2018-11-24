@@ -10,4 +10,10 @@ public interface EventSvc
 	EventListDTO getAllEvents();
 
 	EventDTO     createEvent(EventDTO eventDTO);
+
+	EventDTO     updateEvent(long id, EventDTO eventDTO);
+
+	EventDTO     patchEvent(long id, EventDTO eventDTO);
+
+	void         deleteEventById(long id);
 }
