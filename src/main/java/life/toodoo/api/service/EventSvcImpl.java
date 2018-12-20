@@ -11,8 +11,10 @@ import life.toodoo.api.repositories.EventRepo;
 import life.toodoo.api.v1.mapper.EventMapper;
 import life.toodoo.api.v1.model.EventDTO;
 import life.toodoo.api.v1.model.EventListDTO;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class EventSvcImpl implements EventSvc
 {
 	private final EventMapper eventMapper;
@@ -55,11 +57,11 @@ public class EventSvcImpl implements EventSvc
 
 	@Override
 	public EventDTO updateEvent(long id, EventDTO eventDTO) 
-	{
-		Event event = eventMapper.mapEventDTOtoEvent(eventDTO);
-		event.setId(id);
+	{	 
+		log.info("updateEvent: {}", eventDTO);
+		Event updatedEvent = eventRepo.save( eventMapper.mapEventDTOtoEvent(eventDTO) );
 		
-		return eventMapper.mapEventToEventDTO( eventRepo.save(event) );
+		return eventMapper.mapEventToEventDTO(updatedEvent);
 		
 	}
 	

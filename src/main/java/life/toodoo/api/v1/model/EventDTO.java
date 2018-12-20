@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EventDTO 
 {
+	private Long        id;
+
 	@ApiModelProperty( required = true )
 	private String      title;
 	

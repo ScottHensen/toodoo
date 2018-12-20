@@ -14,6 +14,7 @@ public class EventMapper
 			return null;
 		
 		EventDTO eventDTO = new EventDTO();
+		eventDTO.setId(event.getId());
 		eventDTO.setTitle(event.getTitle());
 		eventDTO.setStatus(event.getStatus());
 		eventDTO.setPriority(event.getPriority());
@@ -28,6 +29,7 @@ public class EventMapper
 			return null;
 		
 		Event event = new Event();
+		event.setId(eventDTO.getId());
 		event.setTitle(eventDTO.getTitle());
 		event.setStatus(eventDTO.getStatus());
 		event.setPriority(eventDTO.getPriority());
