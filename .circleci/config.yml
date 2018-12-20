@@ -50,7 +50,7 @@ jobs:
 #      - run: ./gradlew test
 
       # run tests and gen code coverage
-      - run: gradle clean test jacocoTestReport
+      - run: ./gradlew clean test jacocoTestReport
 
       - run:
           name: Save test results
