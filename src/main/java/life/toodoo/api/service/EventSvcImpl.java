@@ -73,11 +73,12 @@ public class EventSvcImpl implements EventSvc
 				.orElseThrow(ResourceNotFoundException::new);
 		
 	}
+	
 	@Override
 	public void deleteEventById(long id) 
 	{
+		//TODO: maybe change this to a logical delete
 		eventRepo.deleteById(id);
-		
 	}
 
 	
