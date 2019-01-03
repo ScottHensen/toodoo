@@ -9,24 +9,30 @@ import org.junit.Test;
 
 import life.toodoo.api.domain.Event;
 import life.toodoo.api.v1.model.EventDTO;
+import life.toodoo.api.v1.model.ScheduleDTO;
 
 public class EventMapperTest 
 {
+	private EventMapper eventMapper;
+	private ScheduleMapper scheduleMapper;
+	
 	private static final Long ID = 1L;
-	private static final String TITLE    = "Event Test Title";
-	private static final String STATUS   = "In Progress";
+	private static final String  TITLE    = "Event Test Title";
+	private static final String  STATUS   = "In Progress";
 	private static final Integer PRIORITY = 1;
 	private static final BigDecimal COMPLETE_PCT = BigDecimal.valueOf(50.0);
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception 
+	{
+		scheduleMapper = new ScheduleMapper();
+		eventMapper = new EventMapper(scheduleMapper);
 	}
 
 	@Test
 	public void testEventToEventDTO() 
 	{
 		// given
-		EventMapper eventMapper = new EventMapper();
 		Event event = new Event();
 		event.setId(ID);
 		event.setTitle(TITLE);
@@ -48,14 +54,13 @@ public class EventMapperTest
 	public void testEventDtoToEvent()
 	{
 		// given
-		EventMapper eventMapper = new EventMapper();
-
 		EventDTO eventDTO = 
 				EventDTO.builder()
 						.title(TITLE)
 						.status(STATUS)
 						.priority(PRIORITY)
 						.completePct(COMPLETE_PCT)
+						.schedule(new ScheduleDTO())
 						.build();
 		// when 
 		Event event = eventMapper.mapEventDTOtoEvent(eventDTO);

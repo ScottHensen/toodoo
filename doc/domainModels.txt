@@ -1,0 +1,40 @@
+huge goals break down to big tasks
+big tasks break down into smaller todos
+[no reason to have three levels; could be N levels and give them alpha, bravo, 
+ charlie -level task names]
+ 
+daily mastery tasks become recurring, scheduled todos
+
+calendar events are basically scheduled todos
+calendar events could hook to bigger life-goals, like 'stay tuned in to local
+ music scene'
+ 
+random what-to-do-right-now events (go climb camelback or eat some Cornish
+ Pasty) are also simple, repeatable todos; events
+ 
+So...
+
+Event is the core of the system.
+  Event is a todo task, something on the calendar, your daily practice, a one-
+    off thing picked at random for when you're bored.
+    
+EventTree is a cascading parent/child tree of events
+
+Calendar is a list of scheduled events.
+
+
+
+
+
+
+
+My elevator pitch for 'whats going on' app from 2015...
+ "What's going on is an app that tells you exactly that.  Events, activities, 
+ venues are entered into the app's database by a community of users.  When you 
+ want to know what's going on, the app can show you a map of nearby fun, or it 
+ can show you a calendar of events based on the current time and date.  Events, 
+ activities and venues include metadata, so that as the app grows larger than 
+ your particular tribe, your what's going on report will not be clouded with a 
+ bunch of junk you don't care about.  Of course, you can see everything, but 
+ things closest to your heart will display with priority."
+ 

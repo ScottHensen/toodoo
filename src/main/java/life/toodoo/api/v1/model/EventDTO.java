@@ -22,6 +22,8 @@ public class EventDTO
 	private String      status;
 	private Integer     priority;
 	private BigDecimal  completePct;
+	private ScheduleDTO schedule;
+	
 //TODO:  add these...
 //	private byte[]      description;
 //	private LocationDTO location;
