@@ -28,10 +28,12 @@ public class Schedule
 	@Column( name = "end_ts" )
 	private LocalDateTime endTimestamp;
 	
+	@Column( name = "duration_mins" )
+	private Integer durationMins;
+	
     @OneToOne(cascade = CascadeType.ALL)
     private Recurrence recurrence;
     
-    //TODO:  i don't like that auto-ddl puts event_id on the schedule table. fix this.
 	@OneToOne
 	private Event event;
 }

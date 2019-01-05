@@ -61,7 +61,6 @@ public class Recurrence
 	@Column( name = "month", columnDefinition = "smallint" )
 	private Month month;
 	
-    //TODO:  i don't like that auto-ddl puts schedule_id on the recurrence table. fix this.
 	@OneToOne
 	private Schedule schedule;
 	
