@@ -11,6 +11,13 @@ import life.toodoo.api.v1.model.ScheduleDTO;
 @Component
 public class ScheduleMapper 
 {
+	private final RecurrenceMapper recurrenceMapper;
+	
+	public ScheduleMapper(RecurrenceMapper recurrenceMapper) {
+		this.recurrenceMapper = recurrenceMapper;
+	}
+	
+	
 	public Schedule mapScheduleDTOtoSchedule(ScheduleDTO scheduleDTO)
 	{
 		Schedule schedule = new Schedule();
@@ -57,16 +64,20 @@ public class ScheduleMapper
 			return scheduleDTO;
 		
 		if ( schedule.getBeginTimestamp() == null ) {
+			scheduleDTO.setDurationInMinutess(schedule.getDurationMins());
 			return scheduleDTO;
 		}
 		else {
 			scheduleDTO.setBeginDate(schedule.getBeginTimestamp().toLocalDate());
 			scheduleDTO.setBeginTime(schedule.getBeginTimestamp().toLocalTime());
+			scheduleDTO.setDurationInMinutess(schedule.getDurationMins());
+			scheduleDTO.setRecurrence(recurrenceMapper.mapRecurenceToRecurrenceDto(schedule.getRecurrence()));
 		}
 		
 		if ( schedule.getEndTimestamp() != null ) {
 			scheduleDTO.setEndDate(schedule.getEndTimestamp().toLocalDate());
 			scheduleDTO.setEndTime(schedule.getEndTimestamp().toLocalTime());
+			scheduleDTO.setDurationInMinutess(schedule.getDurationMins());
 		}
 		return scheduleDTO;
 	}

@@ -14,12 +14,14 @@ import life.toodoo.api.v1.model.ScheduleDTO;
 
 public class ScheduleMapperTest 
 {
+	RecurrenceMapper recurrenceMapper;
 	ScheduleMapper scheduleMapper;
 	
 	@Before
 	public void setUp() throws Exception 
 	{
-		scheduleMapper = new ScheduleMapper();
+		recurrenceMapper = new RecurrenceMapper();
+		scheduleMapper = new ScheduleMapper(recurrenceMapper);
 	}
 	
 	@Test

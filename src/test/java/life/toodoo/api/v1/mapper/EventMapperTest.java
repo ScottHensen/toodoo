@@ -15,6 +15,7 @@ public class EventMapperTest
 {
 	private EventMapper eventMapper;
 	private ScheduleMapper scheduleMapper;
+	private RecurrenceMapper recurrenceMapper;
 	
 	private static final Long ID = 1L;
 	private static final String  TITLE    = "Event Test Title";
@@ -25,7 +26,8 @@ public class EventMapperTest
 	@Before
 	public void setUp() throws Exception 
 	{
-		scheduleMapper = new ScheduleMapper();
+		recurrenceMapper = new RecurrenceMapper();
+		scheduleMapper = new ScheduleMapper(recurrenceMapper);
 		eventMapper = new EventMapper(scheduleMapper);
 	}
 

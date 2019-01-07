@@ -7,18 +7,23 @@ import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class ScheduleDTO 
 {
+	public ScheduleDTO() {
+		this.recurrence = new RecurrenceDTO();
+	}
+
 	private LocalDate beginDate;
 	private LocalTime beginTime;
 	private LocalDate endDate;
 	private LocalTime endTime;
-//	private Integer   durationHours;
+	private Integer   durationInMinutess;
 //	private Boolean   allDay;
+	private RecurrenceDTO recurrence;
+	
+	
 }

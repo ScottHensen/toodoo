@@ -16,6 +16,7 @@ import life.toodoo.api.commandlinerunner.TestDataBootstrap;
 import life.toodoo.api.domain.Event;
 import life.toodoo.api.repositories.EventRepo;
 import life.toodoo.api.v1.mapper.EventMapper;
+import life.toodoo.api.v1.mapper.RecurrenceMapper;
 import life.toodoo.api.v1.mapper.ScheduleMapper;
 import life.toodoo.api.v1.model.EventDTO;
 
@@ -35,7 +36,7 @@ public class EventSvcIntegTest
 		TestDataBootstrap bootstrapper = new TestDataBootstrap(eventRepo);
 		bootstrapper.run();
 		
-		eventSvc = new EventSvcImpl( new EventMapper(new ScheduleMapper()), eventRepo );
+		eventSvc = new EventSvcImpl( new EventMapper(new ScheduleMapper(new RecurrenceMapper())), eventRepo );
 	}
 
 	@Test

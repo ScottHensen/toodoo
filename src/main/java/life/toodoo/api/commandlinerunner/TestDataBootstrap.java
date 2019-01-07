@@ -70,10 +70,10 @@ public class TestDataBootstrap implements CommandLineRunner
 		event1.setStatus(STATUS1);
 		event1.setPriority(PRIORITY1);
 		event1.setCompletePct(COMPLETE_PCT1);
-		Schedule schedule1 = new Schedule();
-		schedule1.setBeginTimestamp(BEG_TS1);
-		schedule1.setEndTimestamp(END_TS1);
-		schedule1.setEvent(event1);
+			Schedule schedule1 = new Schedule();
+			schedule1.setBeginTimestamp(BEG_TS1);
+			schedule1.setEndTimestamp(END_TS1);
+			schedule1.setEvent(event1);
 		event1.setSchedule(schedule1);
 		events.add(event1);
 		
@@ -82,9 +82,9 @@ public class TestDataBootstrap implements CommandLineRunner
 		event2.setStatus(STATUS2);
 		event2.setPriority(PRIORITY2);
 		event2.setCompletePct(COMPLETE_PCT2);
-		Schedule schedule2 = new Schedule();
-		schedule2.setBeginTimestamp(BEG_TS2);
-		schedule2.setEvent(event2);
+			Schedule schedule2 = new Schedule();
+			schedule2.setBeginTimestamp(BEG_TS2);
+			schedule2.setEvent(event2);
 		event2.setSchedule(schedule2);
 		events.add(event2);
 		
@@ -93,15 +93,15 @@ public class TestDataBootstrap implements CommandLineRunner
 		event3.setStatus(STATUS3);
 		event3.setPriority(PRIORITY3);
 		event3.setCompletePct(COMPLETE_PCT3);
-		Schedule schedule3 = new Schedule();
-		schedule3.setBeginTimestamp(BEG_TS3);
-		schedule3.setEndTimestamp(END_TS3);
-		schedule3.setDurationMins(30);
-		Recurrence recurs3 = new Recurrence();
-		recurs3.setPattern(RecurrencePattern.DAILY);
-		recurs3.setSchedule(schedule3);
-		schedule3.setRecurrence(recurs3);
-		schedule3.setEvent(event3);
+			Schedule schedule3 = new Schedule();
+			schedule3.setBeginTimestamp(BEG_TS3);
+			schedule3.setEndTimestamp(END_TS3);
+			schedule3.setDurationMins(30);
+				Recurrence recurs3 = new Recurrence();
+				recurs3.setPattern(RecurrencePattern.DAILY);
+				recurs3.setSchedule(schedule3);
+			schedule3.setRecurrence(recurs3);
+			schedule3.setEvent(event3);
 		event2.setSchedule(schedule3);
 		events.add(event3);
 		

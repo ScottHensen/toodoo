@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import life.toodoo.api.domain.Event;
 import life.toodoo.api.repositories.EventRepo;
 import life.toodoo.api.v1.mapper.EventMapper;
+import life.toodoo.api.v1.mapper.RecurrenceMapper;
 import life.toodoo.api.v1.mapper.ScheduleMapper;
 import life.toodoo.api.v1.model.EventDTO;
 import life.toodoo.api.v1.model.EventListDTO;
@@ -55,7 +56,7 @@ public class EventSvcTest
 
 		MockitoAnnotations.initMocks(this);
 
-		eventSvc = new EventSvcImpl( new EventMapper(new ScheduleMapper()), eventRepo );
+		eventSvc = new EventSvcImpl( new EventMapper(new ScheduleMapper(new RecurrenceMapper())), eventRepo );
 	}
 
 	@Test

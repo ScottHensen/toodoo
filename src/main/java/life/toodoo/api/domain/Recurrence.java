@@ -20,6 +20,19 @@ import lombok.Data;
 @Data
 public class Recurrence 
 {
+	public Recurrence() 
+	{
+		this.onMonday   = false;
+		this.onTuesday   = false;
+		this.onWednesday = false;
+		this.onThursday  = false;
+		this.onFriday    = false;
+		this.onSaturday  = false;
+		this.onSunday    = false;
+	}
+	
+	
+	
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long id;
@@ -35,8 +48,6 @@ public class Recurrence
 	@Column( name = "ordinal_interval", length = 20 )
 	private OrdinalInterval ordinalInterval;
 	
-	@Column( name = "sun" )
-	private Boolean onSunday;
 	@Column( name = "mon" )
 	private Boolean onMonday;
 	@Column( name = "tue" )
@@ -49,6 +60,8 @@ public class Recurrence
 	private Boolean onFriday;
 	@Column( name = "sat" )
 	private Boolean onSaturday;
+	@Column( name = "sun" )
+	private Boolean onSunday;
 	
 	@Column( name = "day_of_month")
 	private Integer dayOfMonth;
