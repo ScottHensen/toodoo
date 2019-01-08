@@ -31,14 +31,13 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-#--- circleci wants to run gradle 10, which doesn't work with lombok
-#--- so I am using gradlew instead, so we can build with gradle 8 
-      - run: gradle -v
-      - run: gradle dependencies
+#--- circleci wants to run gradle 5.0, which doesn't work with lombok
+#--- so I am using gradlew instead, so we can build with gradle 4.8 
+#      - run: gradle -v
+#      - run: gradle dependencies
 
-#      - run: ./gradlew -v
-#      - run: ./gradlew allDependencies
-#      - run: ./gradlew dependencies
+      - run: ./gradlew -v
+      - run: ./gradlew dependencies
 
       - save_cache:
           paths:
@@ -50,7 +49,7 @@ jobs:
 #      - run: ./gradlew test
 
       # run tests and gen code coverage
-      - run: gradle clean test jacocoTestReport
+      - run: ./gradlew clean test jacocoTestReport
 
       - run:
           name: Save test results

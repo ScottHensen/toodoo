@@ -2,11 +2,13 @@ package life.toodoo.api.domain;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 
@@ -30,8 +32,19 @@ public class Event
     @Column( name = "priority" )
 	private Integer  priority;
 	
+    @OneToOne(cascade = CascadeType.ALL)
+    private Schedule schedule;
+    
 //TODO
 //	private Blob     description;
 //	private Location location;
-//	private Schedule schedule;
+    
+    
+    public void setSchedule(Schedule schedule) {
+        if (schedule != null) {
+            this.schedule = schedule;
+            schedule.setEvent(this);
+        }
+    }
+
 }

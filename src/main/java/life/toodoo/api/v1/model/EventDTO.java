@@ -14,12 +14,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EventDTO 
 {
+	private Long        id;
+
 	@ApiModelProperty( required = true )
 	private String      title;
 	
 	private String      status;
 	private Integer     priority;
 	private BigDecimal  completePct;
+	private ScheduleDTO schedule;
+	
 //TODO:  add these...
 //	private byte[]      description;
 //	private LocationDTO location;

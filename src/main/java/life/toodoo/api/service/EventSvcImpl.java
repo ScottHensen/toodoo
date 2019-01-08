@@ -11,8 +11,10 @@ import life.toodoo.api.repositories.EventRepo;
 import life.toodoo.api.v1.mapper.EventMapper;
 import life.toodoo.api.v1.model.EventDTO;
 import life.toodoo.api.v1.model.EventListDTO;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class EventSvcImpl implements EventSvc
 {
 	private final EventMapper eventMapper;
@@ -37,12 +39,9 @@ public class EventSvcImpl implements EventSvc
 		List<EventDTO> events =
 				eventRepo.findAll()
 					.stream()
-					.map( event -> {
-						return eventMapper.mapEventToEventDTO(event);
-					})
+					.map(eventMapper::mapEventToEventDTO)
 					.collect(Collectors.toList());
 		return new EventListDTO(events);
-						
 	}
 
 	@Override
@@ -55,12 +54,11 @@ public class EventSvcImpl implements EventSvc
 
 	@Override
 	public EventDTO updateEvent(long id, EventDTO eventDTO) 
-	{
-		Event event = eventMapper.mapEventDTOtoEvent(eventDTO);
-		event.setId(id);
+	{	 
+		log.info("updateEvent: {}", eventDTO);
+		Event updatedEvent = eventRepo.save( eventMapper.mapEventDTOtoEvent(eventDTO) );
 		
-		return eventMapper.mapEventToEventDTO( eventRepo.save(event) );
-		
+		return eventMapper.mapEventToEventDTO(updatedEvent);
 	}
 	
 	@Override
@@ -69,13 +67,13 @@ public class EventSvcImpl implements EventSvc
 		return eventRepo.findById(id)
 				.map( event -> mergeEventDtoIntoEvent(eventDTO, event) )
 				.orElseThrow(ResourceNotFoundException::new);
-		
 	}
+	
 	@Override
 	public void deleteEventById(long id) 
 	{
+		//TODO: maybe change this to a logical delete
 		eventRepo.deleteById(id);
-		
 	}
 
 	

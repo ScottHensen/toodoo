@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -14,7 +16,10 @@ import org.mockito.MockitoAnnotations;
 import life.toodoo.api.domain.Event;
 import life.toodoo.api.repositories.EventRepo;
 import life.toodoo.api.v1.mapper.EventMapper;
+import life.toodoo.api.v1.mapper.RecurrenceMapper;
+import life.toodoo.api.v1.mapper.ScheduleMapper;
 import life.toodoo.api.v1.model.EventDTO;
+import life.toodoo.api.v1.model.EventListDTO;
 
 public class EventSvcTest 
 {
@@ -51,7 +56,7 @@ public class EventSvcTest
 
 		MockitoAnnotations.initMocks(this);
 
-		eventSvc = new EventSvcImpl( new EventMapper(), eventRepo );
+		eventSvc = new EventSvcImpl( new EventMapper(new ScheduleMapper(new RecurrenceMapper())), eventRepo );
 	}
 
 	@Test
@@ -67,6 +72,27 @@ public class EventSvcTest
 		
 		// then
 		assertThat(eventDTO.getTitle()).isEqualTo(TITLE);
+	}
+
+	@Test
+	public void testGetAllEvents() 
+	{
+		// given
+		Event event2 = new Event();
+		event2.setId(2L);
+		event2.setTitle("title2");
+		List<Event> returnEvents = new ArrayList<>();
+		returnEvents.add(event);
+		returnEvents.add(event2);
+		
+		when(eventRepo.findAll()).thenReturn(returnEvents);
+		
+		// when
+		EventListDTO eventsDTO = eventSvc.getAllEvents();
+		
+		// then
+		assertThat(eventsDTO.getEvents().get(0).getTitle()).isEqualTo(TITLE);
+		assertThat(eventsDTO.getEvents().get(1).getTitle()).isEqualTo("title2");
 	}
 
 	@Test
