@@ -9,10 +9,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import life.toodoo.api.domain.Event;
-import life.toodoo.api.domain.Recurrence;
 import life.toodoo.api.domain.RecurrencePattern;
-import life.toodoo.api.domain.Schedule;
+import life.toodoo.api.domain.entity.Event;
+import life.toodoo.api.domain.entity.Recurrence;
+import life.toodoo.api.domain.entity.Schedule;
 import life.toodoo.api.repositories.EventRepo;
 import lombok.extern.slf4j.Slf4j;
 

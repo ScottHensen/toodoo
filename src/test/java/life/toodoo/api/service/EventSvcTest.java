@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import life.toodoo.api.domain.Event;
+import life.toodoo.api.domain.entity.Event;
 import life.toodoo.api.repositories.EventRepo;
 import life.toodoo.api.v1.mapper.EventMapper;
 import life.toodoo.api.v1.mapper.RecurrenceMapper;

@@ -2,7 +2,7 @@ package life.toodoo.api.v1.mapper;
 
 import org.springframework.stereotype.Component;
 
-import life.toodoo.api.domain.Event;
+import life.toodoo.api.domain.entity.Event;
 import life.toodoo.api.v1.model.EventDTO;
 
 @Component

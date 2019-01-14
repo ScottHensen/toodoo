@@ -1,4 +1,4 @@
-package life.toodoo.api.domain;
+package life.toodoo.api.domain.entity;
 
 import java.time.LocalDateTime;
 

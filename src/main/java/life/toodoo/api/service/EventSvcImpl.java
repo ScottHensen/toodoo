@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import life.toodoo.api.domain.Event;
+import life.toodoo.api.domain.entity.Event;
 import life.toodoo.api.exception.ResourceNotFoundException;
 import life.toodoo.api.repositories.EventRepo;
 import life.toodoo.api.v1.mapper.EventMapper;
