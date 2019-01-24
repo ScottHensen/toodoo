@@ -45,6 +45,23 @@ public class TestDataBootstrap implements CommandLineRunner
 	private static final Integer PRIORITY4 = 3;
 	private static final BigDecimal COMPLETE_PCT4 = BigDecimal.valueOf(0.01);
 
+	private static final String TITLE4_1     = "Learn some science";
+	private static final String STATUS4_1    = "In Progress";
+	private static final Integer PRIORITY4_1 = 3;
+	private static final BigDecimal COMPLETE_PCT4_1 = BigDecimal.valueOf(0.10);
+	
+	private static final String TITLE4_2   = "Plot yer course";
+	private static final String STATUS4_2  = "Not Started";
+	private static final Integer PRIORITY4_2 = 6;
+	private static final BigDecimal COMPLETE_PCT4_2 = BigDecimal.valueOf(0.00);
+	
+	private static final String TITLE4_3   = "Launch!";
+	private static final String STATUS4_3  = "Not Started";
+	private static final Integer PRIORITY4_3 = 7;
+	private static final BigDecimal COMPLETE_PCT4_3 = BigDecimal.valueOf(0.00);
+	
+	
+
 	private EventRepo eventRepo;
 	
 	public TestDataBootstrap(EventRepo eventRepo) {
@@ -111,6 +128,30 @@ public class TestDataBootstrap implements CommandLineRunner
 		event4.setPriority(PRIORITY4);
 		event4.setCompletePct(COMPLETE_PCT4);
 		events.add(event4);
+		
+		Event event4_1 = new Event();
+		event4_1.setTitle(TITLE4_1);
+		event4_1.setStatus(STATUS4_1);
+		event4_1.setPriority(PRIORITY4_1);
+		event4_1.setCompletePct(COMPLETE_PCT4_1);
+		event4_1.setParent(event4);
+		events.add(event4_1);
+		
+		Event event4_2 = new Event();
+		event4_2.setTitle(TITLE4_2);
+		event4_2.setStatus(STATUS4_2);
+		event4_2.setPriority(PRIORITY4_2);
+		event4_2.setCompletePct(COMPLETE_PCT4_2);
+		event4_2.setParent(event4);
+		events.add(event4_2);
+		
+		Event event4_3 = new Event();
+		event4_3.setTitle(TITLE4_3);
+		event4_3.setStatus(STATUS4_3);
+		event4_3.setPriority(PRIORITY4_3);
+		event4_3.setCompletePct(COMPLETE_PCT4_3);
+		event4_3.setParent(event4);
+		events.add(event4_3);
 		
 		return events;
 	}

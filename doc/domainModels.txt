@@ -19,7 +19,8 @@ Event is the core of the system.
     off thing picked at random for when you're bored.
     
 EventTree is a cascading parent/child tree of events
-
+    [ed. need an xref to associate one event with multiple parents]
+    
 Calendar is a list of scheduled events.
 
 

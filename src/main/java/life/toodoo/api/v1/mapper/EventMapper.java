@@ -1,9 +1,13 @@
 package life.toodoo.api.v1.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import life.toodoo.api.domain.entity.Event;
 import life.toodoo.api.v1.model.EventDTO;
+import life.toodoo.api.v1.model.EventListDTO;
 
 @Component
 public class EventMapper 
@@ -27,7 +31,9 @@ public class EventMapper
 		eventDTO.setPriority(event.getPriority());
 		eventDTO.setCompletePct(event.getCompletePct());
 		eventDTO.setSchedule(scheduleMapper.mapScheduleToScheduleDto(event.getSchedule()));
-		
+		eventDTO.setChildren(
+					mapEventListToEventListDTO(
+							event.getChildren().stream().collect(Collectors.toList()) ) );
 		return eventDTO;
 	}
 
@@ -44,5 +50,17 @@ public class EventMapper
 		event.setCompletePct(eventDTO.getCompletePct());
 		event.setSchedule(scheduleMapper.mapScheduleDTOtoSchedule(eventDTO.getSchedule()));
 		return event;
+	}
+	
+	public EventListDTO mapEventListToEventListDTO(List<Event> eventList)
+	{
+		if ( eventList == null )
+			return null;
+		
+		EventListDTO eventListDTO = new EventListDTO();
+		eventListDTO.setEvents(
+				eventList.stream().map(
+						e -> mapEventToEventDTO(e)).collect(Collectors.toList()));
+		return eventListDTO;
 	}
 }
