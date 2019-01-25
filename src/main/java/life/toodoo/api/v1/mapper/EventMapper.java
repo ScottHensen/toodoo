@@ -31,9 +31,8 @@ public class EventMapper
 		eventDTO.setPriority(event.getPriority());
 		eventDTO.setCompletePct(event.getCompletePct());
 		eventDTO.setSchedule(scheduleMapper.mapScheduleToScheduleDto(event.getSchedule()));
-		eventDTO.setChildren(
-					mapEventListToEventListDTO(
-							event.getChildren().stream().collect(Collectors.toList()) ) );
+		eventDTO.setChildren(mapEventListToEventListDTO(
+								event.getChildren().stream().collect(Collectors.toList()) ) );
 		return eventDTO;
 	}
 

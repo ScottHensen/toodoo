@@ -1,6 +1,7 @@
 package life.toodoo.api.domain.entity;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -52,7 +53,7 @@ public class Event
     private Event parent;
     
     @OneToMany( mappedBy = "parent" )
-    private Set<Event> children;
+    private Set<Event> children = new HashSet<>();
     
     //TODO:  I am not sure a tree is the best structure.
     //
