@@ -1,6 +1,7 @@
 package life.toodoo.api.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
@@ -14,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import life.toodoo.api.domain.entity.Event;
+import life.toodoo.api.errorhandling.EditErrorException;
+import life.toodoo.api.errorhandling.EntityNotFoundException;
 import life.toodoo.api.repositories.EventRepo;
 import life.toodoo.api.v1.mapper.EventMapper;
 import life.toodoo.api.v1.mapper.RecurrenceMapper;
@@ -60,7 +63,7 @@ public class EventSvcTest
 	}
 
 	@Test
-	public void testGetEventById() 
+	public void testGetEventById() throws EntityNotFoundException 
 	{
 		// given
 		Optional<Event> returnEvent = Optional.of(event);
@@ -113,7 +116,6 @@ public class EventSvcTest
 	{
 		// given
 		Long id = 1L;
-
 		when(eventRepo.save(any(Event.class))).thenReturn(event);
 		
 		// when
@@ -124,12 +126,12 @@ public class EventSvcTest
 	}
 	
 	@Test
-	public void testPatchEvent()
+	public void testPatchEvent() throws EntityNotFoundException, EditErrorException
 	{
 		// given
 		Long id = 1L;
-
 		when(eventRepo.findById(anyLong())).thenReturn(Optional.of(event));
+		when(eventRepo.save(any(Event.class))).thenReturn(event);
 		
 		// when
 		EventDTO updatedDTO = eventSvc.patchEvent(id, eventDTO);
@@ -145,68 +147,76 @@ public class EventSvcTest
 		eventSvc.deleteEventById(id);
 		verify(eventRepo, times(1)).deleteById(anyLong());
 	}
-	
+
 	@Test
-	public void testMergeNullEventDtoIntoEvent()
+	public void testUpdateEventWithDto_EmptyEventDTO()
 	{
 		// given
 		EventDTO nullEventDTO = new EventDTO();
+		when(eventRepo.save(any(Event.class))).thenReturn(event);
 		
 		// when 
-		EventDTO mergedEventDTO = ((EventSvcImpl) eventSvc).mergeEventDtoIntoEvent(nullEventDTO, event);
+		Event updatedEvent = ((EventSvcImpl) eventSvc).updateEventWithDto(nullEventDTO, event);
 
 		// then 
-		assertThat(mergedEventDTO.getTitle()).isEqualTo(event.getTitle());
-		assertThat(mergedEventDTO.getStatus()).isEqualTo(event.getStatus());
-		assertThat(mergedEventDTO.getPriority()).isEqualTo(event.getPriority());
-		assertThat(mergedEventDTO.getCompletePct()).isEqualTo(event.getCompletePct());
+		assertThat(updatedEvent.getTitle()).isEqualTo(event.getTitle());
+		assertThat(updatedEvent.getStatus()).isEqualTo(event.getStatus());
+		assertThat(updatedEvent.getPriority()).isEqualTo(event.getPriority());
+		assertThat(updatedEvent.getCompletePct()).isEqualTo(event.getCompletePct());
+		
+		verify(eventRepo, times(1)).save(any(Event.class));
 	}
 	
 	@Test
-	public void testMergeEventDtoIntoNullEvent()
+	public void testUpdateEventWithDto_EmptyEvent()
 	{
 		// given
 		Event nullEvent = new Event();
+		when(eventRepo.save(any(Event.class))).thenReturn(event);
 		
 		// when 
-		EventDTO mergedEventDTO = ((EventSvcImpl) eventSvc).mergeEventDtoIntoEvent(eventDTO, nullEvent);
+		Event updatedEvent = ((EventSvcImpl) eventSvc).updateEventWithDto(eventDTO, nullEvent);
 
 		// then 
-		assertThat(mergedEventDTO.getTitle()).isEqualTo(event.getTitle());
-		assertThat(mergedEventDTO.getStatus()).isEqualTo(event.getStatus());
-		assertThat(mergedEventDTO.getPriority()).isEqualTo(event.getPriority());
-		assertThat(mergedEventDTO.getCompletePct()).isEqualTo(event.getCompletePct());
+		assertThat(updatedEvent.getTitle()).isEqualTo(event.getTitle());
+		assertThat(updatedEvent.getStatus()).isEqualTo(event.getStatus());
+		assertThat(updatedEvent.getPriority()).isEqualTo(event.getPriority());
+		assertThat(updatedEvent.getCompletePct()).isEqualTo(event.getCompletePct());
 	}
 	
 	@Test
-	public void testMergeNullEventDtoIntoNullEvent()
+	public void testUpdateEventWithDto_EmptyEventDto_EmptyEvent()
 	{
 		// given
 		EventDTO nullEventDTO = new EventDTO();
 		Event    nullEvent    = new Event();
+		when(eventRepo.save(any(Event.class))).thenReturn(nullEvent);
 		
 		// when 
-		EventDTO mergedEventDTO = ((EventSvcImpl) eventSvc).mergeEventDtoIntoEvent(nullEventDTO, nullEvent);
+		Event updatedEvent = ((EventSvcImpl) eventSvc).updateEventWithDto(nullEventDTO, nullEvent);
 
 		// then 
-		assertThat(mergedEventDTO.getTitle()).isEqualTo(nullEvent.getTitle());
-		assertThat(mergedEventDTO.getStatus()).isEqualTo(nullEvent.getStatus());
-		assertThat(mergedEventDTO.getPriority()).isEqualTo(nullEvent.getPriority());
-		assertThat(mergedEventDTO.getCompletePct()).isEqualTo(nullEvent.getCompletePct());
+		assertThat(updatedEvent.getTitle()).isNull();
+		assertThat(updatedEvent.getStatus()).isNull();
+		assertThat(updatedEvent.getPriority()).isNull();
+		assertThat(updatedEvent.getCompletePct()).isNull();
 	}
 	
 	@Test
-	public void testMergeEventDtoIntoEvent()
+	public void testUpdateEventWithDto() 
 	{
 		// given
 		eventDTO.setStatus("foo");
+		event.setStatus("foo");
+		when(eventRepo.save(any(Event.class))).thenReturn(event);
+
 		// when 
-		EventDTO mergedEventDTO = ((EventSvcImpl) eventSvc).mergeEventDtoIntoEvent(eventDTO, event);
+		Event updatedEvent = ((EventSvcImpl) eventSvc).updateEventWithDto(eventDTO, event);
 
 		// then 
-		assertThat(mergedEventDTO.getTitle()).isEqualTo(event.getTitle());
-		assertThat(mergedEventDTO.getStatus()).isEqualTo("foo");
-		assertThat(mergedEventDTO.getPriority()).isEqualTo(event.getPriority());
-		assertThat(mergedEventDTO.getCompletePct()).isEqualTo(event.getCompletePct());
+		assertThat(updatedEvent.getTitle()).isEqualTo(event.getTitle());
+		assertThat(updatedEvent.getStatus()).isEqualTo("foo");
+		assertThat(updatedEvent.getPriority()).isEqualTo(event.getPriority());
+		assertThat(updatedEvent.getCompletePct()).isEqualTo(event.getCompletePct());
 	}
 }

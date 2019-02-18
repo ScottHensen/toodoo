@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import life.toodoo.api.errorhandling.EditErrorException;
+import life.toodoo.api.errorhandling.EntityNotFoundException;
 import life.toodoo.api.service.EventSvc;
 import life.toodoo.api.v1.model.EventDTO;
 import life.toodoo.api.v1.model.EventListDTO;
@@ -42,7 +44,8 @@ public class EventController
 	
 	@GetMapping( { "/{id}" } )
 	@ApiOperation( value = "Get an event for a given id" )
-	public EventDTO getEventByID( @PathVariable Long id )
+	public EventDTO getEventByID( @PathVariable Long id ) 
+			throws EntityNotFoundException
 	{
 		return eventSvc.getEventById(id);
 	}
@@ -64,7 +67,8 @@ public class EventController
 	
 	@PatchMapping( { "/{id}" } )
 	@ApiOperation( value = "Update (merge) an event" )
-	public EventDTO patchEvent( @Valid @RequestBody EventDTO eventDTO, @PathVariable Long id )
+	public EventDTO patchEvent( @Valid @RequestBody EventDTO eventDTO, @PathVariable Long id )  
+			throws EntityNotFoundException, EditErrorException
 	{
 		return eventSvc.patchEvent(id, eventDTO);
 	}

@@ -31,8 +31,10 @@ public class EventMapper
 		eventDTO.setPriority(event.getPriority());
 		eventDTO.setCompletePct(event.getCompletePct());
 		eventDTO.setSchedule(scheduleMapper.mapScheduleToScheduleDto(event.getSchedule()));
-		eventDTO.setChildren(mapEventListToEventListDTO(
-								event.getChildren().stream().collect(Collectors.toList()) ) );
+		eventDTO.setChildren( mapEventListToEventListDTO(
+									event.getChildren()
+										 .stream()
+										 .collect(Collectors.toList()) ) );
 		return eventDTO;
 	}
 
@@ -57,9 +59,10 @@ public class EventMapper
 			return null;
 		
 		EventListDTO eventListDTO = new EventListDTO();
-		eventListDTO.setEvents(
-				eventList.stream().map(
-						e -> mapEventToEventDTO(e)).collect(Collectors.toList()));
+		eventListDTO.setEvents(	eventList
+									.stream()
+									.map(this::mapEventToEventDTO)
+									.collect(Collectors.toList()) );
 		return eventListDTO;
 	}
 }

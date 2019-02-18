@@ -24,7 +24,22 @@ EventTree is a cascading parent/child tree of events
 Calendar is a list of scheduled events.
 
 
+Scheduler will spread your stated toodoos around your day, week, month, year to 
+  make sure you give time to each based on priority and equinimity (is that the
+  right word?).  Point being, it will build your calendar with upcoming events
+  and then squeeze daily/weekly events in between work and dates and conferences.
+  
+Tracker will see how well you do at getting your stuff done.
 
+Nagger will let you know when you're missing stuff.  It will ask you if this is
+  really a priority anymore; maybe it's something you should drop if you're just 
+  going to reschedule it every time it comes up.
+  
+Omaha for when you have to call an audible; finds alternatives when your plans 
+  fall through.
+  
+Rando gives you a thing to do when you've got nothing.  Gets its list from a 
+  pool,and/or from a list of stuff you've said you'd like to do sometime.
 
 
 

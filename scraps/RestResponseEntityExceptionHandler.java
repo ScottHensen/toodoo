@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import life.toodoo.api.exception.ResourceNotFoundException;
 import life.toodoo.api.v1.model.EventDTO;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler
 {
 	@ExceptionHandler( { ResourceNotFoundException.class } )

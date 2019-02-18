@@ -2,8 +2,11 @@ package life.toodoo.api.v1.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -15,7 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
@@ -27,7 +29,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import life.toodoo.api.exception.ResourceNotFoundException;
+import life.toodoo.api.domain.entity.Event;
+import life.toodoo.api.errorhandling.EntityNotFoundException;
+import life.toodoo.api.errorhandling.RestExceptionHandler;
 import life.toodoo.api.service.EventSvc;
 import life.toodoo.api.util.TestUtil;
 import life.toodoo.api.v1.controller.EventController;
@@ -73,7 +77,7 @@ public class EventControllerTests
 
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(eventController)
-				.setControllerAdvice(new RestResponseEntityExceptionHandler())
+				.setControllerAdvice(new RestExceptionHandler())
 				.build();
 	}
 
@@ -92,7 +96,7 @@ public class EventControllerTests
 	@Test
 	public void testGetByIdNotFound() throws Exception
 	{
-		when(eventSvc.getEventById(anyLong())).thenThrow(ResourceNotFoundException.class);
+		when(eventSvc.getEventById(anyLong())).thenThrow(EntityNotFoundException.class);
 		
 		mockMvc.perform(get(URL + "/999")
 						.accept(MediaType.APPLICATION_JSON)
@@ -153,9 +157,9 @@ public class EventControllerTests
 						.content(TestUtil.convertObjectToJsonBytes(eventDTO)))
 				.andExpect(status().isCreated())
 				.andDo(print())
-				.andExpect(jsonPath("$.title", is(TITLE1)))
-				.andExpect(jsonPath("$.status", is(STATUS1)))
-				.andExpect(jsonPath("$.priority", is(PRIORITY1)));
+				.andExpect(jsonPath("$.title", is(equalTo(TITLE1))))
+				.andExpect(jsonPath("$.status", is(equalTo(STATUS1))))
+				.andExpect(jsonPath("$.priority", is(equalTo(PRIORITY1))));
 	}
 	
 	@Test
@@ -178,9 +182,9 @@ public class EventControllerTests
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(TestUtil.convertObjectToJsonBytes(eventDTO)))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.title", is(TITLE1)))
-				.andExpect(jsonPath("$.status", is("updated")))
-				.andExpect(jsonPath("$.priority", is(PRIORITY1)));
+				.andExpect(jsonPath("$.title", is(equalTo(TITLE1))))
+				.andExpect(jsonPath("$.status", is(equalTo("updated"))))
+				.andExpect(jsonPath("$.priority", is(equalTo(PRIORITY1))));
 	}
 	
 	@Test
@@ -198,9 +202,12 @@ public class EventControllerTests
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(TestUtil.convertObjectToJsonBytes(eventDTO)))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.title", is(TITLE1)))
-				.andExpect(jsonPath("$.status", is("patched")))
-				.andExpect(jsonPath("$.priority", is(PRIORITY1)));		
+				.andExpect(jsonPath("$.title", is(equalTo(TITLE1))))
+				.andExpect(jsonPath("$.status", is(equalTo("patched"))))
+				.andExpect(jsonPath("$.priority", is(equalTo(PRIORITY1))));		
+		
+		verify(eventSvc, times(1)).patchEvent(anyLong(), any(EventDTO.class));
+
 	}
 	
 	@Test
@@ -213,4 +220,60 @@ public class EventControllerTests
 				
 		verify(eventSvc).deleteEventById(anyLong());
 	}
+	
+	@Test
+	public void testPatchEvent_whenInvalidDto_thenApiValidationErrorReturned() throws Exception
+	{
+		// given - title missing & priority > max
+		EventDTO requestDTO = EventDTO.builder().priority(999).build();
+		
+		// expect
+		mockMvc.perform(patch(URL + "/1")
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(TestUtil.convertObjectToJsonBytes(requestDTO)))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.error.message", is(equalTo("Validation error"))))
+				.andExpect(jsonPath("$.error.rootCauseErrors", hasSize(2)));
+	}
+	
+	@Test
+	public void testPatchEvent_whenInvalidId_thenEntityNotFoundErrorReturned() throws Exception
+	{
+		// given 
+		EventDTO requestDTO = EventDTO.builder().title("test").priority(1).build();
+		
+		// when
+		final String BAD_ID = "1"; 
+		
+		when(eventSvc.patchEvent(anyLong(), any(EventDTO.class)))
+	        .thenThrow(new EntityNotFoundException(Event.class, "id", BAD_ID));
+		
+		// then
+		mockMvc.perform(patch(URL + "/" + BAD_ID)
+						.accept(MediaType.APPLICATION_JSON)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(TestUtil.convertObjectToJsonBytes(requestDTO)))
+				.andExpect(status().isNotFound())
+				.andExpect(jsonPath("$.error.message", is(equalTo("Event was not found for parameters {id=" + BAD_ID + "}"))));
+	}
+
+	@Test
+	public void testPatchEvent_whenBadJson_thenMalformedJsonErrorReturned() throws Exception
+	{
+		// given
+		final String BAD_JSON = "{'id':"; 
+		byte[] badJson = BAD_JSON.getBytes();
+		
+		// expect
+		mockMvc.perform(patch(URL + "/1")
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(badJson))
+		.andExpect(status().isBadRequest())
+		.andExpect(jsonPath("$.error.message", is("Malformed JSON request")))
+		.andExpect(jsonPath("$.error.debugMessage", not(nullValue())));
+		
+	}
+	
 }
