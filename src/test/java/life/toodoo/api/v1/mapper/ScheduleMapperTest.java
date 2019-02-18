@@ -9,7 +9,7 @@ import java.time.LocalTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import life.toodoo.api.domain.Schedule;
+import life.toodoo.api.domain.entity.Schedule;
 import life.toodoo.api.v1.model.ScheduleDTO;
 
 public class ScheduleMapperTest 

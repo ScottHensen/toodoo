@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
 
-import life.toodoo.api.domain.Event;
+import life.toodoo.api.domain.entity.Event;
 import life.toodoo.api.v1.model.EventDTO;
 import life.toodoo.api.v1.model.ScheduleDTO;
 

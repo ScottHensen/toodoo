@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import life.toodoo.api.domain.Recurrence;
+import life.toodoo.api.domain.entity.Recurrence;
 import life.toodoo.api.v1.model.RecurrenceDTO;
 
 @Component

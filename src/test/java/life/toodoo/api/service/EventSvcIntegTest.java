@@ -13,7 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import life.toodoo.api.commandlinerunner.TestDataBootstrap;
-import life.toodoo.api.domain.Event;
+import life.toodoo.api.domain.entity.Event;
 import life.toodoo.api.repositories.EventRepo;
 import life.toodoo.api.v1.mapper.EventMapper;
 import life.toodoo.api.v1.mapper.RecurrenceMapper;

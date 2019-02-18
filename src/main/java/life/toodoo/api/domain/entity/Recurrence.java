@@ -1,4 +1,4 @@
-package life.toodoo.api.domain;
+package life.toodoo.api.domain.entity;
 
 import java.time.DayOfWeek;
 import java.time.Month;
@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import life.toodoo.api.domain.OrdinalInterval;
+import life.toodoo.api.domain.RecurrencePattern;
 import lombok.Data;
 
 @Entity

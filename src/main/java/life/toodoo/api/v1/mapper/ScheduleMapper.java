@@ -5,7 +5,7 @@ import java.time.LocalTime;
 
 import org.springframework.stereotype.Component;
 
-import life.toodoo.api.domain.Schedule;
+import life.toodoo.api.domain.entity.Schedule;
 import life.toodoo.api.v1.model.ScheduleDTO;
 
 @Component

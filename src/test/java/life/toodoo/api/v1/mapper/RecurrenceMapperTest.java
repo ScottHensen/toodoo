@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import life.toodoo.api.domain.OrdinalInterval;
-import life.toodoo.api.domain.Recurrence;
 import life.toodoo.api.domain.RecurrencePattern;
+import life.toodoo.api.domain.entity.Recurrence;
 import life.toodoo.api.v1.model.RecurrenceDTO;
 
 public class RecurrenceMapperTest 
